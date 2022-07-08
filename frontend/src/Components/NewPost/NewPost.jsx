@@ -1,4 +1,5 @@
 import { Button, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { useAlert } from "react-alert";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,6 +10,7 @@ import "./NewPost.css";
 const NewPost = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
+  const navigate = useNavigate();
 
   const [image, setImage] = useState(null);
   const [caption, setCaption] = useState("");
@@ -44,6 +46,7 @@ const NewPost = () => {
     e.preventDefault();
     await dispatch(createNewPost(caption, image));
     dispatch(loadUser());
+    navigate("/account");
   };
 
   return (

@@ -15,6 +15,7 @@ import Search from "./Components/Search/Search";
 import UpdatePassword from "./Components/UpdatePassword/UpdatePassword";
 import UpdateProfile from "./Components/UpdateProfile/UpdateProfile";
 import UserProfile from "./Components/UserProfile/UserProfile";
+import "./App.css";
 
 const App = () => {
   const dispatch = useDispatch();

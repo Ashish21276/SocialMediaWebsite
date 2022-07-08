@@ -15,7 +15,7 @@ import "./Header.css";
 const Header = () => {
   const [tap, setTap] = useState(window.location.pathname);
   return (
-    <div className="header">
+    <div className="header fixedTop">
       <Link to="/" onClick={() => setTap("/")}>
         {tap === "/" ? <Home style={{ color: "black" }} /> : <HomeOutlined />}
       </Link>

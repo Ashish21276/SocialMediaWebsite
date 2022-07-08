@@ -6,11 +6,12 @@ export const likePost = (id) => async (dispatch) => {
       type: "likeRequest",
     });
 
-    const { data } = await axios.get(`/api/upload/${id}`);
+    // const { data } =
+    await axios.get(`/api/upload/${id}`);
 
     dispatch({
       type: "likeSuccess",
-      payload: data.msg,
+      // payload: data.msg,
     });
   } catch (error) {
     dispatch({

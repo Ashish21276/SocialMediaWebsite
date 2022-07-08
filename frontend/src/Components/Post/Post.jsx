@@ -19,6 +19,7 @@ import {
   getFollowinPost,
   getMyPost,
   getUserPost,
+  // getUserPost,
   loadUser,
 } from "../../Actions/User";
 import CommentCard from "../CommentCard/CommentCard";
@@ -44,16 +45,21 @@ const Post = ({
   const [commentValue, setCommentValue] = useState("");
   const [captionToggle, setCaptionToggle] = useState(false);
   const [captionValue, setCaptionValue] = useState(caption);
+  const [likesLength, setLikesLength] = useState(likes.length);
 
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
+  const { loading } = useSelector((state) => state.like);
 
   const addCommentHandler = async (e) => {
     e.preventDefault();
+
     await dispatch(addCommentOnPost(postId, commentValue));
 
     if (isAccount) {
       dispatch(getMyPost());
+    } else if (isPersonal) {
+      dispatch(getUserPost(user._id));
     } else {
       dispatch(getFollowinPost());
     }
@@ -69,16 +75,22 @@ const Post = ({
   }, [likes, user._id]);
 
   const handleLike = async () => {
+    if (liked) {
+      setLikesLength(likesLength - 1);
+    } else {
+      setLikesLength(likesLength + 1);
+    }
     setLiked(!liked);
+
     await dispatch(likePost(postId));
 
-    if (isAccount) {
-      dispatch(getMyPost());
-    } else if (isPersonal) {
-      dispatch(getUserPost(ownerId));
-    } else {
-      dispatch(getFollowinPost());
-    }
+    // if (isAccount) {
+    //   dispatch(getMyPost());
+    // } else if (isPersonal) {
+    //   dispatch(getUserPost(ownerId));
+    // } else {
+    //   dispatch(getFollowinPost());
+    // }
   };
 
   const updateCaptionHandler = async (e) => {
@@ -137,11 +149,11 @@ const Post = ({
         onClick={() => setLikesUser(!likesUser)}
         disabled={likes.length === 0}
       >
-        <Typography>{likes.length}</Typography>
+        <Typography>{likesLength}</Typography>
       </button>
 
       <div className="postFooter">
-        <Button onClick={handleLike}>
+        <Button onClick={handleLike} disabled={loading}>
           {liked ? <Favorite style={{ color: "red" }} /> : <FavoriteBorder />}
         </Button>
 
@@ -150,7 +162,7 @@ const Post = ({
         </Button>
 
         {isDelete ? (
-          <Button onClick={deletePostHandler}>
+          <Button onClick={deletePostHandler} disabled={loading}>
             <DeleteOutline />
           </Button>
         ) : null}
